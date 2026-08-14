@@ -5,6 +5,7 @@ import (
    "bufio"
    "os"
    "fmt"
+   "log"
    "strings"
  )
 
@@ -31,8 +32,10 @@ func startRepl(cfg *config){
 			fmt.Println("Invalid command")
 			continue
 		}
-		command.callback()
-			
+		err := command.callback(cfg)
+		if err != nil{
+			log.Fatal(err)
+		}
 	}
 
 
@@ -42,7 +45,7 @@ func startRepl(cfg *config){
 type cliCommand struct {
 	name		string
 	description	string
-	callback	func() error
+	callback	func(*config) error
 }
 
 func getCommands() map[string] cliCommand {
@@ -54,8 +57,13 @@ func getCommands() map[string] cliCommand {
 		},
 		"map":{
 			name: "map",
-			description:"Lists some location areas",
+			description:"Lists the next page of location areas",
 			callback:callbackMap,
+		},
+		"mapb":{
+			name: "mapb",
+			description:"Lists the previous page of location areas",
+			callback:callbackMapb,
 		},
 		
 		"exit":{
