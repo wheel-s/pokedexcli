@@ -33,3 +33,57 @@ type LocationAreasResp struct {
 	} `json:"results"`
 }
 
+type LocationArea struct {
+	EncounterMethodRates	[]struct {
+		EncounterMethod		struct {
+			Name	string
+			URL	string
+		}
+		VersionDetails	[]struct {
+			Rate		int
+			Version	[]struct {
+				Name	string
+				URL	string
+			}
+		}
+	}
+
+	GameIndex	int
+	ID		int
+	Location	struct {
+		Name	string
+		URL 	string
+	}
+	Name		string
+	Names		[]struct {
+		Language	struct {
+			Name	string
+			URL	string
+		}
+		Name	string
+	}
+	PokemonEncounters	[]struct {
+		Pokemon		struct {
+			Name	string
+			URL	string
+		}
+		
+		VersionDetails		[]struct {
+			EncounterDetails	[]struct {
+				Chance		int
+				ConditionValues	[]interface{}
+				MaxLevel	int
+				Method		struct {
+					Name	string
+					URL 	string
+				}
+				MinLevel	int
+			}
+			MaxChance	int
+			Version		struct {
+				Name	string
+				URL	string
+			}
+		}
+	}	
+}

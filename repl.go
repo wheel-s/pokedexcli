@@ -5,7 +5,6 @@ import (
    "bufio"
    "os"
    "fmt"
-   "log"
    "strings"
  )
 
@@ -24,6 +23,10 @@ func startRepl(cfg *config){
 			continue
 		}
 		commandName :=cleaned[0]
+		args := []string{}
+		if len(cleaned) > 1 {
+			args = cleaned[1:]
+		}
 		
 		availableCommands :=getCommands()
 		
@@ -32,9 +35,9 @@ func startRepl(cfg *config){
 			fmt.Println("Invalid command")
 			continue
 		}
-		err := command.callback(cfg)
+		err := command.callback(cfg, args...)
 		if err != nil{
-			log.Fatal(err)
+			fmt.Println(err)
 		}
 	}
 
@@ -45,7 +48,7 @@ func startRepl(cfg *config){
 type cliCommand struct {
 	name		string
 	description	string
-	callback	func(*config) error
+	callback	func(*config, ...string) error
 }
 
 func getCommands() map[string] cliCommand {
@@ -65,6 +68,12 @@ func getCommands() map[string] cliCommand {
 			description:"Lists the previous page of location areas",
 			callback:callbackMapb,
 		},
+		"explore":{
+			name: "explore {locatio_area}",
+			description:"Lists the pokemon in a location area",
+			callback:callbackExplore,
+		},
+		
 		
 		"exit":{
 			name:"exit",
